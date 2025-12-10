@@ -22,6 +22,7 @@ public class TaskRequest {
     @Schema(description = "Optional detailed description of the task", example = "Math exercises page 24")
     private String description;
 
-    @Schema(description = "Current status of the task", example = "PENDING")
+    @Schema(description = "Current status of the task", example = "PENDING",
+    		allowableValues = {"PENDING", "IN_PROGRESS", "COMPLETED"})
     private TaskStatus status;
 }

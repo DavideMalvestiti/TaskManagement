@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler {
                 errors.put(err.getField(), err.getDefaultMessage())
         );
         return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleInvalidEnum(HttpMessageNotReadableException ex) {
+        String message = "Invalid value for 'status'. Allowed values: PENDING, IN_PROGRESS, COMPLETED";
+        return ResponseEntity.badRequest().body(message);
     }
 
     @ExceptionHandler(Exception.class)
