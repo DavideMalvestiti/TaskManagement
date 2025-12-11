@@ -48,12 +48,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
 	/**
-     * Returns a list of tasks, optionally filtered by status.
-     *
-     * @param status optional filter for {@link TaskStatus};
-     *               if null, all tasks are returned
-     * @return list of {@link TaskResponse}
-     */
+	 * Retrieve a paginated list of tasks, optionally filtered by status.
+	 *
+	 * @param status optional filter for {@link TaskStatus}; if {@code null}, all tasks are returned
+	 * @param page   the page number to retrieve (0-based). Default is 0.
+	 * @param size   the number of tasks per page. Default is 20.
+	 * @return a list of {@link TaskResponse} representing the tasks in the requested page
+	 */
 	@Override
     @Transactional(readOnly = true)
 	public List<TaskResponse> getDtoList(TaskStatus status, int page, int size) {

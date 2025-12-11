@@ -29,7 +29,7 @@ mvn spring-boot:run
 
 The API starts on:
 
-```http
+```
 http://localhost:8080
 ```
 
@@ -39,7 +39,7 @@ http://localhost:8080
 
 Swagger UI is already enabled and available at:
 
-```http
+```
 http://localhost:8080/swagger-ui.html
 ```
 
@@ -60,13 +60,25 @@ http://localhost:8080/swagger-ui.html
 }
 ```
 
-### - Get All Tasks
+### - Get All Tasks (Paginated)
 `GET /api/tasks`
 
-**Supports filter:**
+**Query Parameters:**
 
-```http
-/api/tasks?status=PENDING
+- **status** (TaskStatus, optional)  
+  Filter by task status: `PENDING`, `IN_PROGRESS`, `COMPLETED`. If omitted, all tasks are returned.
+
+- **page** (int, optional)  
+  Page number (0-based). Default: 0.
+
+- **size** (int, optional)  
+  Number of tasks per page. Default: 20.
+
+**Example requests:**
+
+```
+/api/tasks?page=0&size=10
+/api/tasks?status=PENDING&page=1&size=5
 ```
 
 ### - Get Task by ID
@@ -117,6 +129,7 @@ src/
 - **Error Handling:** Centralized via GlobalExceptionHandler for 400/404/invalid enums  
 - **Database:** H2 in-memory for simplicity and testing  
 - **Testing:** Full integration tests using TestRestTemplate and JUnit 5  
+- **Pagination:** List endpoint supports page and size parameters for efficient retrieval
 - **Assumptions:** Status values limited to PENDING, IN_PROGRESS, COMPLETED; authentication is basic
 
 ---

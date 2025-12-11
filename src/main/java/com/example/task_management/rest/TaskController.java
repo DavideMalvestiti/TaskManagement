@@ -73,12 +73,19 @@ public class TaskController {
     }
 
     /**
-     * List all tasks, optionally filtering by status.
+     * Retrieve a paginated list of tasks, optionally filtered by status.
      *
-     * @param status optional status filter
-     * @return a list of tasks with HTTP status 200
+     * <p>
+     * This endpoint allows you to get a subset of tasks with pagination support.
+     * You can optionally filter the tasks by their status.
+     * </p>
+     *
+     * @param status optional status filter (e.g., PENDING, IN_PROGRESS, DONE)
+     * @param page   the page number to retrieve (0-based). Default is 0.
+     * @param size   the number of tasks per page. Default is 20.
+     * @return a list of {@link TaskResponse} with HTTP status 200
      */
-    @Operation(summary = "List tasks", description = "Optionally filter by status")
+    @Operation(summary = "List tasks")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "List of tasks retrieved successfully")
     })
