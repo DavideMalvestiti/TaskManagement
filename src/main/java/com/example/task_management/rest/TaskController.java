@@ -84,10 +84,14 @@ public class TaskController {
     })
     @GetMapping
     public ResponseEntity<List<TaskResponse>> tasksList(
-            @Parameter(description = "Filter tasks by status")
-            @RequestParam(required = false) TaskStatus status) {
+    		@Parameter(description = "Filter tasks by status")
+            @RequestParam(required = false) TaskStatus status,
+            @Parameter(description = "Page number (0-based) to retrieve. Default is 0")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Number of tasks per page. Default is 20")
+            @RequestParam(defaultValue = "20") int size) {
 
-        return ResponseEntity.ok(taskService.getDtoList(status));
+        return ResponseEntity.ok(taskService.getDtoList(status, page, size));
     }
 
     /**

@@ -19,6 +19,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import com.example.task_management.dto.request.TaskRequest;
 import com.example.task_management.dto.response.TaskResponse;
 import com.example.task_management.factory.TaskFactory;
@@ -163,13 +166,15 @@ class TaskServiceTest {
     @Test
     void testGetDtoListAll() {
         List<Task> tasks = Arrays.asList(task);
-        when(taskRepository.findAll()).thenReturn(tasks);
+        Page<Task> tasksPage = new PageImpl<>(tasks);
+
+        when(taskRepository.findAll(PageRequest.of(0, 10))).thenReturn(tasksPage);
         when(taskFactory.toDtoList(tasks)).thenReturn(Arrays.asList(taskResponse));
 
-        List<TaskResponse> result = taskService.getDtoList(null);
+        List<TaskResponse> result = taskService.getDtoList(null, 0, 10);
 
         assertEquals(1, result.size());
-        verify(taskRepository, times(1)).findAll();
+        verify(taskRepository, times(1)).findAll(PageRequest.of(0, 10));
     }
 
 }

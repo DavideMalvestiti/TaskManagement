@@ -131,7 +131,7 @@ class TaskControllerTest {
     	createTestTask("Task 1", "Math exercises page 24", TaskStatus.PENDING);
 
         ResponseEntity<TaskResponse[]> response = restTemplate.exchange(
-                baseUrl,
+        		baseUrl + "?page=0&size=10",
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 TaskResponse[].class
@@ -149,7 +149,7 @@ class TaskControllerTest {
     	createTestTask("Task 2", "Math exercises page 120", TaskStatus.IN_PROGRESS);
 
         ResponseEntity<TaskResponse[]> response = restTemplate.exchange(
-                baseUrl + "?status=PENDING",
+                baseUrl + "?status=PENDING&page=0&size=10",
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
                 TaskResponse[].class

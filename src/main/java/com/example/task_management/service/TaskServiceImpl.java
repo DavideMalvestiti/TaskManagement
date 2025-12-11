@@ -2,7 +2,12 @@ package com.example.task_management.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,15 +56,20 @@ public class TaskServiceImpl implements TaskService {
      */
 	@Override
     @Transactional(readOnly = true)
-    public List<TaskResponse> getDtoList(TaskStatus status) {
-    	List<Task> tasks;
-        if (status != null) {
-            tasks = taskRepository.findAllByStatus(status);
-        } else {
-            tasks = taskRepository.findAll();
-        }
-        return taskFactory.toDtoList(tasks);
-    }
+	public List<TaskResponse> getDtoList(TaskStatus status, int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<Task> tasksPage;
+
+	    if (status != null) {
+	        tasksPage = taskRepository.findByStatus(status, pageable);
+	    } else {
+	        tasksPage = taskRepository.findAll(pageable);
+	    }
+
+	    return tasksPage.stream()
+	                    .map(taskFactory::toDto)
+	                    .collect(Collectors.toList());
+	}
 
 	/**
      * Creates a new task.
